@@ -8,6 +8,7 @@
     tools:context=".CryptoDisplay">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/top_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/grey"
@@ -19,4 +20,16 @@
         app:menu="@menu/navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_navigation"
+        app:navGraph="@navigation/navigation" />
 </androidx.constraintlayout.widget.ConstraintLayout>
