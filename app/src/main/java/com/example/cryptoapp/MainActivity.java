@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Toast.makeText(MainActivity.this, user.getEmail() + " signed in", Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(this, CryptoDisplay.class);
-            //startActivity(intent);
+            Intent intent = new Intent(this, CryptoDisplay.class);
+            startActivity(intent);
         }
         else {
             Toast.makeText(MainActivity.this, "Create/Signin failed", Toast.LENGTH_SHORT).show();
