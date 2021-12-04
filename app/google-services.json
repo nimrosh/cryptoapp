@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "969040408662",
+    "project_id": "focal-cipher-305300",
+    "storage_bucket": "focal-cipher-305300.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969040408662:android:82dd51b4602cb6fd6d8bf7",
+        "android_client_info": {
+          "package_name": "com.example.cryptoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969040408662-bki5fri49vkouqfrudbc4jm7can6036a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiNH5z0ikojpXwOXQeyTuIbi_zTaycAAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969040408662-bki5fri49vkouqfrudbc4jm7can6036a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969040408662:android:454ccbd3f1087a056d8bf7",
+        "android_client_info": {
+          "package_name": "io.cordova.hellocordova"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969040408662-bki5fri49vkouqfrudbc4jm7can6036a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiNH5z0ikojpXwOXQeyTuIbi_zTaycAAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969040408662-bki5fri49vkouqfrudbc4jm7can6036a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
