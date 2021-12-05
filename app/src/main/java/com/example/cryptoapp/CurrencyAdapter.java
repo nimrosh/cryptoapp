@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CurrencyAdapter extends RecyclerView.Adapter{
+public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>{
 
     private Context context;
     private List<Currency> currencyList;

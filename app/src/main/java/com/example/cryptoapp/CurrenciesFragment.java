@@ -11,8 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +44,7 @@ public class CurrenciesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RequestQueue requestQueue;
+    private List<Currency> currencyList;
 
     public CurrenciesFragment() {
         // Required empty public constructor
@@ -77,5 +90,51 @@ public class CurrenciesFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.currencylist);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        requestQueue = VolleySingleton.getmInstance(getContext()).getRequestQueue();
+
+        currencyList = new ArrayList<>();
+        fetchCurrencies();
+    }
+
+    private void fetchCurrencies() {
+
+        String url = "https://api.exchange.coinbase.com/currencies";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        String id = jsonObject.getString("id");
+                        String name = jsonObject.getString("name");
+                        String status = jsonObject.getString("status");
+
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                        String type = jsonObject1.getString("type");
+                        String address = jsonObject1.getString("crypto_address_link");
+                        Double min = jsonObject1.getDouble("min_withdrawal_amount");
+                        Integer max = jsonObject1.getInt("max_withdrawal_amount");
+
+                        Currency currency = new Currency(id, name, status, type, address, min, max);
+                        currencyList.add(currency);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    CurrencyAdapter currencyAdapter = new CurrencyAdapter(getContext(), currencyList);
+
+                    recyclerView.setAdapter(currencyAdapter);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
     }
 }
