@@ -15,10 +15,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     Button signin;
     Button register;
     EditText em;
@@ -66,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        db = FirebaseFirestore.getInstance();
     }
 
     private void createAccount(String email, String password) {
@@ -77,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Map<String, Object> usr = new HashMap<>();
+                            usr.put("favorites", new ArrayList<Currency>());
+                            db.document(user.getEmail()).set(usr);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

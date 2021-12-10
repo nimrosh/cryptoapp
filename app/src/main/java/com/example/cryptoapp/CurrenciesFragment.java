@@ -19,6 +19,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,6 +101,8 @@ public class CurrenciesFragment extends Fragment {
 
         currencyList = new ArrayList<>();
         fetchCurrencies();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Toast.makeText(getContext(), user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     private void fetchCurrencies() {
