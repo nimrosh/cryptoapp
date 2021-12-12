@@ -2,10 +2,10 @@ package com.example.cryptoapp;
 
 public class Currency {
     private String id, name, status, type, address;
-    private Double min_withdraw;
-    private Integer max_withdraw;
+    private Object min_withdraw;
+    private Object max_withdraw;
 
-    public Currency(String id, String name, String status, String type, String address, Double min_withdraw, Integer max_withdraw) {
+    public Currency(String id, String name, String status, String type, String address, Object min_withdraw, Object max_withdraw) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -35,11 +35,11 @@ public class Currency {
         return address;
     }
 
-    public Double getMin_withdraw() {
+    public Object getMin_withdraw() {
         return min_withdraw;
     }
 
-    public Integer getMax_withdraw() {
+    public Object getMax_withdraw() {
         return max_withdraw;
     }
 }

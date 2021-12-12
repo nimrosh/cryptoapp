@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,13 +25,15 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     private Context context;
     private List<Currency> currencyList;
     private Map<String, String> faves;
+    private Boolean isFave;
     FirebaseUser user;
     DatabaseReference dr;
 
-    public CurrencyAdapter(Context context, List<Currency> currencyList) {
+    public CurrencyAdapter(Context context, List<Currency> currencyList, Map<String, String> map, Boolean curfav) {
         this.context = context;
         this.currencyList = currencyList;
-        faves = new HashMap<>();
+        faves = map;
+        isFave = curfav;
         user = FirebaseAuth.getInstance().getCurrentUser();
         dr = FirebaseDatabase.getInstance().getReference("users");
     }
@@ -48,6 +51,14 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         holder.name.setText(currency.getName());
         holder.name.setTag(currency.getId());
         holder.status.setText(currency.getStatus());
+        if (faves.containsKey(currency.getId())) {
+            holder.fave.setImageResource(R.drawable.ic_favorites);
+            holder.fave.setTag("favorite");
+        }
+        else {
+            holder.fave.setImageResource(R.drawable.ic_unfavorites);
+            holder.fave.setTag("unfavorite");
+        }
     }
 
     @Override
@@ -60,11 +71,10 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         ImageButton fave;
         public CurrencyHolder(@NonNull View itemView) {
             super(itemView);
-
             name = itemView.findViewById(R.id.name);
             status = itemView.findViewById(R.id.status);
             fave = itemView.findViewById(R.id.fave);
-            fave.setTag("unfavorite");
+
             fave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

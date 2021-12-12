@@ -21,13 +21,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +56,8 @@ public class CurrenciesFragment extends Fragment {
     private RecyclerView recyclerView;
     private RequestQueue requestQueue;
     private List<Currency> currencyList;
+    private Map<String, String> fave;
+    private DatabaseReference dr;
 
     public CurrenciesFragment() {
         // Required empty public constructor
@@ -99,9 +109,28 @@ public class CurrenciesFragment extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
         requestQueue = VolleySingleton.getmInstance(getContext()).getRequestQueue();
 
-        currencyList = new ArrayList<>();
-        fetchCurrencies();
+        dr = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        currencyList = new ArrayList<>();
+        fave = new HashMap<>();
+        DatabaseReference dare = dr.child(user.getUid()).child("favorites");
+        dare.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    fave.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                System.out.println("loadPost:onCancelled" + databaseError.toException());
+                // ...
+            }
+        });
+        fetchCurrencies();
     }
 
     private void fetchCurrencies() {
@@ -121,8 +150,8 @@ public class CurrenciesFragment extends Fragment {
                         JSONObject jsonObject1 = jsonObject.getJSONObject("details");
                         String type = jsonObject1.getString("type");
                         String address = jsonObject1.getString("crypto_address_link");
-                        Double min = jsonObject1.getDouble("min_withdrawal_amount");
-                        Integer max = jsonObject1.getInt("max_withdrawal_amount");
+                        Object min = jsonObject1.get("min_withdrawal_amount");
+                        Object max = jsonObject1.get("max_withdrawal_amount");
 
                         Currency currency = new Currency(id, name, status, type, address, min, max);
                         currencyList.add(currency);
@@ -130,7 +159,7 @@ public class CurrenciesFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    CurrencyAdapter currencyAdapter = new CurrencyAdapter(getContext(), currencyList);
+                    CurrencyAdapter currencyAdapter = new CurrencyAdapter(getContext(), currencyList, fave, false);
 
                     recyclerView.setAdapter(currencyAdapter);
                 }
