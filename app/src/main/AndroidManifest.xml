@@ -11,11 +11,7 @@
         android:theme="@style/Theme.CryptoApp">
         <activity
             android:name=".CryptoDisplay"
-            android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustNothing">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cryptoapp.MainActivity"/>
         </activity>
         <activity
             android:name=".MainActivity"

@@ -1,5 +1,6 @@
 package com.example.cryptoapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -196,6 +197,17 @@ public class CurrenciesFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 currencyAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+        MenuItem logout = menu.findItem(R.id.logout);
+        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
                 return false;
             }
         });

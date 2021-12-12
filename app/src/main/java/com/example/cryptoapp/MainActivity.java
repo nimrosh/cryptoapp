@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference dr;
     Button signin;
     Button register;
+    Button google;
     EditText em;
     EditText ps;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         signin = (Button) findViewById(R.id.signin);
         register = (Button) findViewById(R.id.register);
+        google = (Button) findViewById(R.id.google);
         em = (EditText) findViewById(R.id.email);
         ps = (EditText) findViewById(R.id.password);
     }
