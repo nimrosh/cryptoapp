@@ -56,6 +56,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         Currency currency = currencyListFiltered.get(position);
         holder.name.setText(currency.getName());
         holder.name.setTag(currency.getId());
+        holder.min.setText("$" + currency.getMax_withdraw().toString());
         holder.status.setText(currency.getStatus());
         holder.status.setTag(currency);
         if (faves.containsKey(currency.getId())) {
@@ -74,12 +75,13 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     }
 
     public class CurrencyHolder extends RecyclerView.ViewHolder {
-        TextView name, status;
+        TextView name, status, min;
         ImageButton fave;
         public CurrencyHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             status = itemView.findViewById(R.id.status);
+            min = itemView.findViewById(R.id.min);
             fave = itemView.findViewById(R.id.fave);
 
             fave.setOnClickListener(new View.OnClickListener() {
