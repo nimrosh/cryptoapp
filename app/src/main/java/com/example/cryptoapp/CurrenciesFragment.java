@@ -10,8 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -55,6 +59,7 @@ public class CurrenciesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RequestQueue requestQueue;
+    private CurrencyAdapter currencyAdapter;
     private List<Currency> currencyList;
     private Map<String, String> fave;
     private DatabaseReference dr;
@@ -100,6 +105,7 @@ public class CurrenciesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         recyclerView = (RecyclerView) getView().findViewById(R.id.currencylist);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -159,7 +165,7 @@ public class CurrenciesFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    CurrencyAdapter currencyAdapter = new CurrencyAdapter(getContext(), currencyList, fave, false);
+                    currencyAdapter = new CurrencyAdapter(getContext(), currencyList, fave, false);
 
                     recyclerView.setAdapter(currencyAdapter);
                 }
@@ -172,5 +178,26 @@ public class CurrenciesFragment extends Fragment {
         });
 
         requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_filter, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                currencyAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
     }
 }

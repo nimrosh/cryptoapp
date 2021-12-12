@@ -59,7 +59,6 @@ public class FavoritesFragment extends Fragment {
     private List<Currency> currencyList;
     private Map<String, String> faveList;
     private DatabaseReference dr;
-    CurrencyAdapter currencyAdapter;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -113,8 +112,6 @@ public class FavoritesFragment extends Fragment {
 
         currencyList = new ArrayList<>();
         faveList = new HashMap<>();
-        currencyAdapter = new CurrencyAdapter(getContext(), currencyList, faveList, true);
-        recyclerView.setAdapter(currencyAdapter);
 
         dr = FirebaseDatabase.getInstance().getReference("users");
         //fetchCurrencies();
@@ -144,7 +141,6 @@ public class FavoritesFragment extends Fragment {
                 try {
                     String id = jsonObject.getString("id");
                     String name = jsonObject.getString("name");
-                    System.out.println(name);
                     String status = jsonObject.getString("status");
 
                     JSONObject jsonObject1 = jsonObject.getJSONObject("details");
@@ -154,9 +150,9 @@ public class FavoritesFragment extends Fragment {
                     Object max = jsonObject1.get("max_withdrawal_amount");
 
                     Currency currency = new Currency(id, name, status, type, address, min, max);
-                    System.out.println("fetching");
                     currencyList.add(currency);
-                    currencyAdapter.notifyDataSetChanged();
+                    CurrencyAdapter currencyAdapter = new CurrencyAdapter(getContext(), currencyList, faveList, false);
+                    recyclerView.setAdapter(currencyAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
