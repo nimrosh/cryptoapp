@@ -102,7 +102,6 @@ public class CurrenciesFragment extends Fragment {
         currencyList = new ArrayList<>();
         fetchCurrencies();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Toast.makeText(getContext(), user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     private void fetchCurrencies() {

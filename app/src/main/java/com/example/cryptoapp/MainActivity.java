@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -25,7 +27,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private FirebaseDatabase db;
+    private DatabaseReference dr;
     Button signin;
     Button register;
     EditText em;
@@ -74,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseDatabase.getInstance();
+        dr = db.getReference("users");
     }
 
     private void createAccount(String email, String password) {
@@ -86,15 +90,12 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String, Object> usr = new HashMap<>();
-                            usr.put("favorites", new ArrayList<Currency>());
-                            db.document(user.getEmail()).set(usr);
+                            String uID = user.getUid();
+                            dr.child(uID).child("email").setValue(user.getEmail());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             System.out.println("createUserWithEmail:failure" + task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
